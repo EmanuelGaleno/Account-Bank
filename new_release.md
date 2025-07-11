@@ -2,5 +2,6 @@
 
 ### Features
 
-* Begin DTO, Model for aplication (PL-01)
+* Begin DTO, Model for aplication (PL-00)
+* Finish for another view (PL-01)
 

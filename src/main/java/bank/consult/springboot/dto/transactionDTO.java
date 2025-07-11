@@ -8,7 +8,7 @@ import java.time.OffsetDateTime;
 public class transactionDTO {
 
     @NotNull //nao pode receber valores nulos
-    @Min(0) // nao pode receber valores abaixo de zero
+    @Min(0) // nao pode receber zero
     private double value;
 
     @NotNull
