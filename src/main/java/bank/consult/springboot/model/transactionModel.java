@@ -2,6 +2,8 @@ package bank.consult.springboot.model;
 
 import java.time.OffsetDateTime;
 
+
+
 public class transactionModel {
 
     private double value;
@@ -13,7 +15,15 @@ public class transactionModel {
     }
 
 
+
+
+
+
+
+
+
     //aqui pode ficar bem melhor ultilizando lombook
+    // so usei os metodo get pq ja passei os atributos na classe do construtor
     public double getValue() {
         return value;
     }
