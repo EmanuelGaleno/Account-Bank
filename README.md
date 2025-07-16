@@ -12,6 +12,7 @@ Criar uma aplicação backend enxuta e funcional, voltada para quem está aprend
 - Uso de DTOs para transporte de dados
 - Organização limpa do projeto
 - Fundamentos do Spring Data JPA
+-  Integração com banco de dados real (PostgreSQL via Docker)
 
 ---
 
@@ -51,3 +52,9 @@ Execute o projeto pela IDE ou pelo terminal:
 Acesse a aplicação em:
 
 http://localhost:8080
+
+
+✍️ Autor
+Duell
+Desenvolvedor Backend Java
+📍 Palhoça / Florianópolis - SC
