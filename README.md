@@ -21,7 +21,8 @@ Criar uma aplicação backend enxuta e funcional, voltada para quem está aprend
 - Spring Boot
 - Spring Web
 - Spring Data JPA
-- H2 Database (banco em memória)
+- PostgreSQL (via Docker)
+- Docker + Docker Compose
 - Maven
 
 ---
