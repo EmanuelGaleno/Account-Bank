@@ -39,23 +39,16 @@ public class AccountService {
         UserEntity userEntity = new UserEntity();
         userEntity.setFirstName(firstName);
         userEntity.setLastName(lastName);
-        userEntity.setEmail(email != null ? email : "defaultEmail@example.com");  // Default email se não enviado
-        userEntity.setPhone(phone != null ? phone : "0000000000");  // Default phone se não enviado
-
-        // Salvando o usuário no banco
+        userEntity.setEmail(email != null ? email : "defaultEmail@example.com");
+        userEntity.setPhone(phone != null ? phone : "0000000000");
         UserEntity savedUser = userRepository.save(userEntity);
-
         // Criando a conta com o tipo de conta baseado no enum
         AccountEntity accountEntity = new AccountEntity(
                 savedUser,
                 accountType,  // Usando o tipo do enum
                 BigDecimal.valueOf(initialBalance)
         );
-
-        // Salvando a conta no banco
         AccountEntity savedAccount = accountRepository.save(accountEntity);
-
-        // Retornando a DTO da conta
         return new AccountDTO(
                 savedAccount.getId(),
                 savedAccount.getUser().getId(),
@@ -65,9 +58,6 @@ public class AccountService {
                 "Conta criada com sucesso para " + savedAccount.getUser().getFirstName() + " com tipo de conta: " + savedAccount.getAccountType().name()
         );
     }
-
-
-
 
     // Aqui busca usuario pelo nome, sobrenome e ID com camel sensitive
     public UserEntity getUserByNameAndLastNameAndId(String firstName, String lastName, Long id) {

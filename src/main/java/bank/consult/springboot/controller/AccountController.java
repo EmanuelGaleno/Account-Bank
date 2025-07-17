@@ -36,7 +36,7 @@ public class AccountController {
         return user;
     }
 
-    // Método POST para criar uma conta com os parâmetros necessários
+    // cria uma conta com os parâmetros necessários
     @PostMapping
     public AccountDTO createAccount(@RequestParam @NotNull String firstName,
                                     @RequestParam @NotNull String lastName,

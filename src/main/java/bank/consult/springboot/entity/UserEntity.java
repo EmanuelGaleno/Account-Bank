@@ -25,19 +25,19 @@ public class UserEntity {
     @Column(name = "first_name")
     private String firstName;
 
-    @Column (name = "last_name")
+    @Column(name = "last_name")
     private String lastName;
-
 
     private String email;
     private String phone;
 
     @Column(name = "created_at", updatable = false)
-    private LocalDateTime createdAt= LocalDateTime.now();
+    private LocalDateTime createdAt = LocalDateTime.now();
 
-    @JsonManagedReference
     @OneToMany(mappedBy = "user")
+    @JsonManagedReference  // Controla a serialização das contas associadas ao usuário
     private List<AccountEntity> accounts;
 }
+
 
 
