@@ -1,5 +1,7 @@
 package bank.consult.springboot.entity;
 
+import bank.consult.springboot.enums.AccountType;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,12 +21,13 @@ public class AccountEntity {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)  // Relaciona com a tabela 'users' através da coluna 'user_id'
-    private UserEntity user;  // Associa a conta ao usuário
+    @JoinColumn(name = "user_id", nullable = false)
+    @JsonBackReference  // Evita a serialização do usuário dentro da conta
+    private UserEntity user;
 
-
+    @Enumerated(EnumType.STRING)
     @Column(name = "account_type")
-    private String accountType;
+    private AccountType accountType;
 
     @Column(name = "balance")
     private BigDecimal balance;
@@ -32,7 +35,7 @@ public class AccountEntity {
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
-    public AccountEntity(UserEntity user, String accountType, BigDecimal balance) {
+    public AccountEntity(UserEntity user, AccountType accountType, BigDecimal balance) {
         this.user = user;
         this.accountType = accountType;
         this.balance = balance;

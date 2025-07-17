@@ -14,18 +14,13 @@ public class AccountDTO {
 
     @NotNull
     private Long id;
-
     @NotNull
     private Long userId;
-
     @NotNull
     private String accountType;
-
     @NotNull
     private BigDecimal balance;
-
     @NotNull
     private LocalDateTime createdAt;
-
     private String successMessage;  // Mensagem de sucesso quando a conta for criada
 }

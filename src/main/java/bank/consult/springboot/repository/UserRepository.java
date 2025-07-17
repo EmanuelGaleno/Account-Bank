@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface UserRepository extends JpaRepository<UserEntity, Long> {
 
-    // Metodo para buscar usuario pelo primeiro nome e sobrenome
+    // Metodo para verificar se user ja existe e dps criar uma conta
     @Query("SELECT u FROM UserEntity u WHERE LOWER(u.firstName) = LOWER(:firstName) AND LOWER(u.lastName) = LOWER(:lastName)")
     List<UserEntity> findByFirstNameAndLastName(String firstName, String lastName);
 

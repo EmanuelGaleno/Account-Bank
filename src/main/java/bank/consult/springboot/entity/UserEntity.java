@@ -1,6 +1,7 @@
 package bank.consult.springboot.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -24,18 +25,19 @@ public class UserEntity {
     @Column(name = "first_name")
     private String firstName;
 
-    @Column (name = "last_name")
+    @Column(name = "last_name")
     private String lastName;
-
 
     private String email;
     private String phone;
 
     @Column(name = "created_at", updatable = false)
-    private LocalDateTime createdAt= LocalDateTime.now();
+    private LocalDateTime createdAt = LocalDateTime.now();
 
     @OneToMany(mappedBy = "user")
+    @JsonManagedReference  // Controla a serialização das contas associadas ao usuário
     private List<AccountEntity> accounts;
 }
+
 
 

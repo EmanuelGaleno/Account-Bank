@@ -3,6 +3,7 @@ package bank.consult.springboot.service;
 import bank.consult.springboot.dto.AccountDTO;
 import bank.consult.springboot.entity.AccountEntity;
 import bank.consult.springboot.entity.UserEntity;
+import bank.consult.springboot.enums.AccountType;
 import bank.consult.springboot.repository.AccountRepository;
 import bank.consult.springboot.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,33 +26,36 @@ public class AccountService {
         return !existingUser.isEmpty();
     }
 
-    // Aqui cria uma conta e um usuário
-    public AccountDTO createAccount(String firstName, String lastName, String accountType, double initialBalance, String phone, String email) {
-
-        // Verifica se o usuário já existe
+    // Criação de uma conta e um usuário
+    public AccountDTO createAccount(String firstName, String lastName, AccountType accountType, double initialBalance, String phone, String email) {
         if (userExists(firstName, lastName)) {
             throw new IllegalArgumentException("Já existe um usuário com esse nome.");
         }
+        if (initialBalance < 0) {
+            throw new IllegalArgumentException("Saldo inicial não pode ser negativo.");
+        }
+
+        // Criação do usuário
         UserEntity userEntity = new UserEntity();
         userEntity.setFirstName(firstName);
         userEntity.setLastName(lastName);
-        userEntity.setPhone(phone != null ? phone : "0000000000");  // Se o telefone não for passado, o valor padrão será "0000000000"
-        userEntity.setEmail(email != null ? email : "default@domain.com");  // Se o email não for passado, o valor padrão será "default@domain.com"
+        userEntity.setEmail(email != null ? email : "defaultEmail@example.com");
+        userEntity.setPhone(phone != null ? phone : "0000000000");
         UserEntity savedUser = userRepository.save(userEntity);
-        // Criação da conta para o usuário
+        // Criando a conta com o tipo de conta baseado no enum
         AccountEntity accountEntity = new AccountEntity(
-                savedUser,  // Associando o usuário à conta
-                accountType,  // Tipo da conta (corrente, poupança, etc.)
-                BigDecimal.valueOf(initialBalance)  // Saldo inicial
+                savedUser,
+                accountType,  // Usando o tipo do enum
+                BigDecimal.valueOf(initialBalance)
         );
         AccountEntity savedAccount = accountRepository.save(accountEntity);
         return new AccountDTO(
                 savedAccount.getId(),
                 savedAccount.getUser().getId(),
-                savedAccount.getAccountType(),
+                savedAccount.getAccountType().name(),  // Convertendo enum para string
                 savedAccount.getBalance(),
                 savedAccount.getCreatedAt(),
-                "Conta criada com sucesso para " + savedUser.getFirstName() + " " + savedUser.getLastName() + " com o tipo de conta: " + accountType
+                "Conta criada com sucesso para " + savedAccount.getUser().getFirstName() + " com tipo de conta: " + savedAccount.getAccountType().name()
         );
     }
 
