@@ -3,6 +3,7 @@ package bank.consult.springboot.controller;
 
 import bank.consult.springboot.dto.AccountDTO;
 import bank.consult.springboot.entity.UserEntity;
+import bank.consult.springboot.enums.AccountType;
 import bank.consult.springboot.service.AccountService;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,12 +40,15 @@ public class AccountController {
     @PostMapping
     public AccountDTO createAccount(@RequestParam @NotNull String firstName,
                                     @RequestParam @NotNull String lastName,
-                                    @RequestParam @NotNull String accountType,
+                                    @RequestParam @NotNull String accountType,  // Aqui vai vir como String
                                     @RequestParam @NotNull double initialBalance,
-                                    @RequestParam(required = false) String phone,  // Parâmetro opcional
-                                    @RequestParam(required = false) String email) {  // Parâmetro opcional
+                                    @RequestParam(required = false) String phone,
+                                    @RequestParam(required = false) String email) {
         try {
-            return accountService.createAccount(firstName, lastName, accountType, initialBalance, phone, email);
+            // Converte a string para o enum AccountType o tipo da conta
+            AccountType type = AccountType.valueOf(accountType.toUpperCase());
+
+            return accountService.createAccount(firstName, lastName, type, initialBalance, phone, email);
         } catch (IllegalArgumentException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }
