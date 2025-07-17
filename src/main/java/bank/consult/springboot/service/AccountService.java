@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class AccountService {
@@ -20,60 +19,48 @@ public class AccountService {
     @Autowired
     private UserRepository userRepository;
 
-    // Buscar contas associadas ao usuario pelo ID
-    public List<AccountDTO> getAccountsByUserId(Long userId) {
-        List<AccountEntity> accountEntities = accountRepository.findByUserId(userId);
-        return accountEntities.stream()
-                .map(accountEntity -> new AccountDTO(
-                        accountEntity.getId(),
-                        accountEntity.getUser().getId(),
-                        accountEntity.getAccountType(),
-                        accountEntity.getBalance(),
-                        accountEntity.getCreatedAt()
-                ))
-                .collect(Collectors.toList());
+    // Verifica se o user já existe no banco
+    private boolean userExists(String firstName, String lastName) {
+        List<UserEntity> existingUser = userRepository.findByFirstNameAndLastName(firstName, lastName);
+        return !existingUser.isEmpty();
     }
 
-    // Busca user pelo nome e sobre
-    public List<UserEntity> getUserByNameAndLastName (String firstName, String lastName) {
-        return userRepository.findByFirstNameAndLastName(firstName, lastName);
-    }
+    // Aqui cria uma conta e um usuário
+    public AccountDTO createAccount(String firstName, String lastName, String accountType, double initialBalance, String phone, String email) {
 
-
-    // Criando user
-    public AccountDTO createAccount(String firstName, String lastName, String accountType, double initialBalance) {
-
+        // Verifica se o usuário já existe
+        if (userExists(firstName, lastName)) {
+            throw new IllegalArgumentException("Já existe um usuário com esse nome.");
+        }
         UserEntity userEntity = new UserEntity();
         userEntity.setFirstName(firstName);
         userEntity.setLastName(lastName);
-        // O email e telefone podem ser nulos, mas vou add outra validacao aqui
-        userEntity.setEmail("email@domain.com");
-        userEntity.setPhone("000000000");
-
-        // Salvando o usuário no banco
+        userEntity.setPhone(phone != null ? phone : "0000000000");  // Se o telefone não for passado, o valor padrão será "0000000000"
+        userEntity.setEmail(email != null ? email : "default@domain.com");  // Se o email não for passado, o valor padrão será "default@domain.com"
         UserEntity savedUser = userRepository.save(userEntity);
+        // Criação da conta para o usuário
         AccountEntity accountEntity = new AccountEntity(
-                savedUser,
-                accountType,
-                BigDecimal.valueOf(initialBalance) // define saldo inicial
+                savedUser,  // Associando o usuário à conta
+                accountType,  // Tipo da conta (corrente, poupança, etc.)
+                BigDecimal.valueOf(initialBalance)  // Saldo inicial
         );
-        // Salvando a conta no banco
         AccountEntity savedAccount = accountRepository.save(accountEntity);
         return new AccountDTO(
                 savedAccount.getId(),
                 savedAccount.getUser().getId(),
                 savedAccount.getAccountType(),
                 savedAccount.getBalance(),
-                savedAccount.getCreatedAt()
+                savedAccount.getCreatedAt(),
+                "Conta criada com sucesso para " + savedUser.getFirstName() + " " + savedUser.getLastName() + " com o tipo de conta: " + accountType
         );
     }
 
-    // Metodo para buscar usuario pelo nome e ID
-    public UserEntity getUserByNameAndId(String firstName, Long id) {
-        List<UserEntity> users = userRepository.findByFirstNameAndId(firstName, id);
+    // Aqui busca usuario pelo nome, sobrenome e ID com camel sensitive
+    public UserEntity getUserByNameAndLastNameAndId(String firstName, String lastName, Long id) {
+        List<UserEntity> users = userRepository.findByFirstNameAndLastNameAndId(firstName, lastName, id);
         if (users.isEmpty()) {
-            return null; // Retorna null mas vou lançar uma excecao customizada
+            return null;
         }
-        return users.get(0);  // Retorna o primeiro usuario encontrado
+        return users.get(0);
     }
 }

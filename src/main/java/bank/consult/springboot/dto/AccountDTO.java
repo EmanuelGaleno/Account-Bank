@@ -4,7 +4,6 @@ import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
@@ -27,4 +26,6 @@ public class AccountDTO {
 
     @NotNull
     private LocalDateTime createdAt;
+
+    private String successMessage;  // Mensagem de sucesso quando a conta for criada
 }

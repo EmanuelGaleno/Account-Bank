@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
@@ -20,8 +19,8 @@ public class AccountEntity {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id", insertable = false, updatable = false)
-    private UserEntity user;  // Relacionamento com a entidade User
+    @JoinColumn(name = "user_id", nullable = false)  // Relaciona com a tabela 'users' através da coluna 'user_id'
+    private UserEntity user;  // Associa a conta ao usuário
 
 
     @Column(name = "account_type")
