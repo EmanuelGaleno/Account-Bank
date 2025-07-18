@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
@@ -19,10 +20,10 @@ public class AccountEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
-    @JsonBackReference  // Evita a serialização do usuário dentro da conta
+
+    @JsonBackReference
     private UserEntity user;
 
     @Enumerated(EnumType.STRING)
