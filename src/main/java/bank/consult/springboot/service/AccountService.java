@@ -34,25 +34,22 @@ public class AccountService {
         if (initialBalance < 0) {
             throw new IllegalArgumentException("Saldo inicial não pode ser negativo.");
         }
-
-        // Criação do usuário
         UserEntity userEntity = new UserEntity();
         userEntity.setFirstName(firstName);
         userEntity.setLastName(lastName);
         userEntity.setEmail(email != null ? email : "defaultEmail@example.com");
         userEntity.setPhone(phone != null ? phone : "0000000000");
         UserEntity savedUser = userRepository.save(userEntity);
-        // Criando a conta com o tipo de conta baseado no enum
         AccountEntity accountEntity = new AccountEntity(
                 savedUser,
-                accountType,  // Usando o tipo do enum
+                accountType,
                 BigDecimal.valueOf(initialBalance)
         );
         AccountEntity savedAccount = accountRepository.save(accountEntity);
         return new AccountDTO(
                 savedAccount.getId(),
                 savedAccount.getUser().getId(),
-                savedAccount.getAccountType().name(),  // Convertendo enum para string
+                savedAccount.getAccountType().name(),
                 savedAccount.getBalance(),
                 savedAccount.getCreatedAt(),
                 "Conta criada com sucesso para " + savedAccount.getUser().getFirstName() + " com tipo de conta: " + savedAccount.getAccountType().name()
@@ -66,5 +63,57 @@ public class AccountService {
             return null;
         }
         return users.get(0);
+    }
+
+    // Verifica o saldo da conta
+    public String getBalanceMessage(Long accountId) {
+        AccountEntity account = accountRepository.findById(accountId)
+                .orElseThrow(() -> new IllegalArgumentException("Conta não encontrada"));
+        return account.getUser().getFirstName() + ", seu saldo é de " + account.getBalance();
+    }
+
+    // deposito de valor na conta
+    public AccountDTO deposit(Long accountId, BigDecimal amount) {
+        AccountEntity account = accountRepository.findById(accountId)
+                .orElseThrow(() -> new IllegalArgumentException("Conta não encontrada"));
+        if (amount.compareTo(BigDecimal.ZERO) <= 0) {
+            throw new IllegalArgumentException("O valor do depósito deve ser maior que zero.");
+        }
+        BigDecimal updatedBalance = account.getBalance().add(amount);
+        account.setBalance(updatedBalance);
+        accountRepository.save(account);
+        String successMessage = "Depósito de R$ " + amount + " realizado com sucesso! Saldo atual: R$ " + updatedBalance;
+        return new AccountDTO(
+                account.getId(),
+                account.getUser().getId(),
+                account.getAccountType().name(),
+                updatedBalance,
+                account.getCreatedAt(),
+                successMessage
+        );
+    }
+
+    // saque de valor na conta
+    public AccountDTO withdraw(Long accountId, BigDecimal amount) {
+        AccountEntity account = accountRepository.findById(accountId)
+                .orElseThrow(() -> new IllegalArgumentException("Conta não encontrada"));
+        if (amount.compareTo(BigDecimal.ZERO) <= 0) {
+            throw new IllegalArgumentException("O valor do saque deve ser maior que zero.");
+        }
+        if (account.getBalance().compareTo(amount) < 0) {
+            throw new IllegalArgumentException("Saldo insuficiente para realizar o saque.");
+        }
+        BigDecimal updatedBalance = account.getBalance().subtract(amount);
+        account.setBalance(updatedBalance);
+        accountRepository.save(account);
+        String successMessage = "Saque de R$ " + amount + " concluído com sucesso! Saldo restante de " + account.getUser().getFirstName() + ": R$ " + updatedBalance;
+        return new AccountDTO(
+                account.getId(),
+                account.getUser().getId(),
+                account.getAccountType().name(),
+                updatedBalance,
+                account.getCreatedAt(),
+                successMessage
+        );
     }
 }

@@ -22,5 +22,14 @@ public class AccountDTO {
     private BigDecimal balance;
     @NotNull
     private LocalDateTime createdAt;
-    private String successMessage;  // Mensagem de sucesso quando a conta for criada
+    private String successMessage;
+
+    // Construtor sem successMessage
+    public AccountDTO(Long id, Long userId, String accountType, BigDecimal balance, LocalDateTime createdAt) {
+        this.id = id;
+        this.userId = userId;
+        this.accountType = accountType;
+        this.balance = balance;
+        this.createdAt = createdAt;
+    }// Mensagem de sucesso quando a conta for criada
 }

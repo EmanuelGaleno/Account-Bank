@@ -6,7 +6,6 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -35,7 +34,7 @@ public class UserEntity {
     private LocalDateTime createdAt = LocalDateTime.now();
 
     @OneToMany(mappedBy = "user")
-    @JsonManagedReference  // Controla a serialização das contas associadas ao usuário
+    @JsonManagedReference
     private List<AccountEntity> accounts;
 }
 

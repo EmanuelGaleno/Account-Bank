@@ -11,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.math.BigDecimal;
+
 
 @RestController
 @RequestMapping("/accounts")
@@ -36,19 +38,47 @@ public class AccountController {
         return user;
     }
 
-    // cria uma conta com os parâmetros necessários
-    @PostMapping
+    // cria uma conta
+    @PostMapping("/new_user")
     public AccountDTO createAccount(@RequestParam @NotNull String firstName,
                                     @RequestParam @NotNull String lastName,
-                                    @RequestParam @NotNull String accountType,  // Aqui vai vir como String
+                                    @RequestParam @NotNull String accountType,
                                     @RequestParam @NotNull double initialBalance,
                                     @RequestParam(required = false) String phone,
                                     @RequestParam(required = false) String email) {
         try {
-            // Converte a string para o enum AccountType o tipo da conta
             AccountType type = AccountType.valueOf(accountType.toUpperCase());
-
             return accountService.createAccount(firstName, lastName, type, initialBalance, phone, email);
+        } catch (IllegalArgumentException e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+        }
+    }
+
+    // ver saldo da conta
+    @GetMapping("/balance")
+    public String getBalanceMessage(@RequestParam Long accountId) {
+        try {
+            return accountService.getBalanceMessage(accountId);  // Retorna a mensagem com o saldo
+        } catch (IllegalArgumentException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        }
+    }
+
+    // depósito
+    @PostMapping("/deposit")
+    public AccountDTO deposit(@RequestParam Long accountId, @RequestParam BigDecimal amount) {
+        try {
+            return accountService.deposit(accountId, amount);
+        } catch (IllegalArgumentException e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+        }
+    }
+
+    //  saque
+    @PostMapping("/withdraw")
+    public AccountDTO withdraw(@RequestParam Long accountId, @RequestParam BigDecimal amount) {
+        try {
+            return accountService.withdraw(accountId, amount);
         } catch (IllegalArgumentException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }
