@@ -12,7 +12,7 @@ Criar uma aplicação backend enxuta e funcional, voltada para quem está aprend
 - Uso de DTOs para transporte de dados
 - Organização limpa do projeto
 - Fundamentos do Spring Data JPA
--  Integração com banco de dados real (PostgreSQL via Docker)
+- Integração com banco de dados real (PostgreSQL via Docker)
 
 ---
 
@@ -30,31 +30,89 @@ Criar uma aplicação backend enxuta e funcional, voltada para quem está aprend
 
 ## 🧪 Funcionalidades
 
-- Criar usuários
-- Criar contas vinculadas aos usuários
-- Consultar contas criadas
+### Funcionalidades Implementadas
 
-*(Endpoints básicos para CRUD estão disponíveis — simples e objetivos)*
+- **Criação de Usuários**: Permite cadastrar usuários com nome, sobrenome, e-mail e telefone (opcionais).
+- **Criação de Contas Bancárias**: Cria contas vinculadas aos usuários com saldo inicial e tipo de conta (Corrente ou Poupança) através de um `enum`.
+- **Depósito**: Realiza depósitos nas contas e retorna uma mensagem com o valor depositado e o saldo atualizado.
+- **Saque**: Permite saques, validando o saldo disponível e retornando uma mensagem com o valor restante após o saque.
+- **Verificação de Saldo**: Verifica o saldo da conta e retorna uma mensagem com o valor disponível.
+- **Consultas de Conta**: Realiza consultas para buscar contas bancárias vinculadas a um usuário pelo nome e sobrenome.
+
+### Endpoints
+
+- **POST** `/accounts/new_user`: Criação de uma nova conta bancária com usuário.
+- **POST** `/accounts/deposit`: Realiza um depósito em uma conta bancária.
+- **POST** `/accounts/withdraw`: Realiza um saque de uma conta bancária.
+- **GET** `/accounts/balance`: Consulta o saldo de uma conta bancária.
+- **GET** `/accounts/user`: Busca um usuário específico por nome, sobrenome e ID.
 
 ---
 
 ## 🏁 Como Rodar o Projeto Localmente
 
+### Pré-requisitos
+
+1. Instalar o **Java 17+**.
+2. Ter o **Maven** instalado.
+3. Instalar o **Docker** e **Docker Compose** para rodar o PostgreSQL.
+
+### Passos
+
 1. Clone este repositório:
-   ```bash
+   ```
    git clone https://github.com/seu-usuario/springboot-conta-bancaria.git
    cd springboot-conta-bancaria
-Importe em sua IDE (IntelliJ, VS Code, Eclipse)
+   ```
+Importe o projeto em sua IDE (IntelliJ, VS Code, Eclipse).
 
 Execute o projeto pela IDE ou pelo terminal:
 
- ```./mvnw spring-boot:run  ```
+```
+./mvnw spring-boot:run
 Acesse a aplicação em:
-
+```
 http://localhost:8080
+🚀 Testando
+Com a API rodando localmente, você pode testar as funcionalidades usando o Postman ou qualquer outra ferramenta para enviar requisições HTTP. Exemplos de como realizar as requisições estão abaixo.
 
+Exemplo de Criação de Conta:
 
+Método: POST
+
+URL: http://localhost:8080/accounts/new_user
+
+Corpo da requisição:
+
+```
+json
+{
+  "firstName": "João",
+  "lastName": "Silva",
+  "accountType": "CORRENTE",
+  "initialBalance": 1000.00,
+  "phone": "1234567890",
+  "email": "joao.silva@example.com"
+}
+```
+Exemplo de Depósito:
+
+Método: POST
+
+URL: http://localhost:8080/accounts/deposit
+
+Corpo da requisição:
+
+```
+Json
+{
+  "accountId": 1,
+  "amount": 500.00
+}
+```
 ✍️ Autor
+
 Duell
 Desenvolvedor Backend Java
 📍 Palhoça / Florianópolis - SC
+
