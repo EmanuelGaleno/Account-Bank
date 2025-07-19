@@ -82,10 +82,8 @@ Método: POST
 
 URL: http://localhost:8080/accounts/new_user
 
-Corpo da requisição:
-
+Corpo da requisição:json
 ```
-json
 {
   "firstName": "João",
   "lastName": "Silva",
@@ -102,9 +100,8 @@ Método: POST
 URL: http://localhost:8080/accounts/deposit
 
 Corpo da requisição:
-
+json
 ```
-Json
 {
   "accountId": 1,
   "amount": 500.00
