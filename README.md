@@ -1,4 +1,4 @@
-# 💼 Projeto Spring Boot: API Simples de Conta Bancária
+# 🏦 Projeto Spring Boot: API Simples de Conta Bancária
 
 Este projeto é uma API REST desenvolvida com **Java + Spring Boot**, com o objetivo de praticar e demonstrar **boas práticas de arquitetura e organização de código** em um sistema simples de **cadastro de contas bancárias**.
 
