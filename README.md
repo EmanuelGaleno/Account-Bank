@@ -6,7 +6,7 @@ Este projeto é uma API REST desenvolvida com **Java + Spring Boot**, com o obje
 
 ## 🎯 Objetivo
 
-Criar uma aplicação backend enxuta e funcional, voltada para quem está aprendendo Java e Spring Boot, com foco em:
+Criar uma aplicação backend enxuta e funcional, voltada para Java e Spring Boot, com foco em:
 
 - Separação clara por camadas (Controller, Service, Repository)
 - Uso de DTOs para transporte de dados
@@ -48,6 +48,21 @@ Criar uma aplicação backend enxuta e funcional, voltada para quem está aprend
 - **GET** `/accounts/user`: Busca um usuário específico por nome, sobrenome e ID.
 
 ---
+
+## 🧪 Testes Implementados
+
+Para garantir a qualidade, foram criados testes unitários focados na camada de serviço (`AccountService`), cobrindo cenários como:
+
+- Criação de conta com usuário
+- Depósito em conta bancária
+- Saque em conta bancária
+- Exceção ao tentar sacar valor maior que o saldo disponível
+- Recuperação da mensagem de saldo da conta
+
+Esses testes utilizam mocks para os repositórios, garantindo execução rápida e isolada do Spring.
+
+---
+
 
 ## 🏁 Como Rodar o Projeto Localmente
 
