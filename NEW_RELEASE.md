@@ -11,3 +11,4 @@
 * Validação de valores para depósito e saque: Garantido que depósitos e saques não possam ser realizados com valores negativos. (PL-05)
 * Mensagem personalizada ao sacar: Ao realizar um saque, uma mensagem é retornada com o valor final da conta do usuário. (PL-05)
 * Consulta de saldo: Adicionada a funcionalidade de verificação de saldo, retornando uma mensagem clara com o valor da conta. (PL-05)
+* Adicionar testes unitários para AccountService cobrindo criação de conta, depósito, saque e consulta de saldo. (PL-06)

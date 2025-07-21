@@ -8,17 +8,22 @@ import bank.consult.springboot.repository.AccountRepository;
 import bank.consult.springboot.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.math.BigDecimal;
 import java.util.List;
 
 @Service
 public class AccountService {
 
-    @Autowired
-    private AccountRepository accountRepository;
+    private final AccountRepository accountRepository;
+    private final UserRepository userRepository;
 
+    // Injeção via construtor (padrão recomendadíssimo)
     @Autowired
-    private UserRepository userRepository;
+    public AccountService(AccountRepository accountRepository, UserRepository userRepository) {
+        this.accountRepository = accountRepository;
+        this.userRepository = userRepository;
+    }
 
     // Verifica se o user já existe no banco
     private boolean userExists(String firstName, String lastName) {
@@ -40,12 +45,14 @@ public class AccountService {
         userEntity.setEmail(email != null ? email : "defaultEmail@example.com");
         userEntity.setPhone(phone != null ? phone : "0000000000");
         UserEntity savedUser = userRepository.save(userEntity);
+
         AccountEntity accountEntity = new AccountEntity(
                 savedUser,
                 accountType,
                 BigDecimal.valueOf(initialBalance)
         );
         AccountEntity savedAccount = accountRepository.save(accountEntity);
+
         return new AccountDTO(
                 savedAccount.getId(),
                 savedAccount.getUser().getId(),
@@ -82,7 +89,9 @@ public class AccountService {
         BigDecimal updatedBalance = account.getBalance().add(amount);
         account.setBalance(updatedBalance);
         accountRepository.save(account);
+
         String successMessage = "Depósito de R$ " + amount + " realizado com sucesso! Saldo atual: R$ " + updatedBalance;
+
         return new AccountDTO(
                 account.getId(),
                 account.getUser().getId(),
@@ -106,7 +115,9 @@ public class AccountService {
         BigDecimal updatedBalance = account.getBalance().subtract(amount);
         account.setBalance(updatedBalance);
         accountRepository.save(account);
+
         String successMessage = "Saque de R$ " + amount + " concluído com sucesso! Saldo restante de " + account.getUser().getFirstName() + ": R$ " + updatedBalance;
+
         return new AccountDTO(
                 account.getId(),
                 account.getUser().getId(),
