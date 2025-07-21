@@ -74,7 +74,7 @@ Esses testes utilizam mocks para os repositórios, garantindo execução rápida
 
 ### Passos
 
-1. Clone este repositório:
+Clone este repositório:
    ```
    git clone https://github.com/seu-usuario/springboot-conta-bancaria.git
    cd springboot-conta-bancaria
