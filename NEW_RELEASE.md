@@ -12,3 +12,4 @@
 * Mensagem personalizada ao sacar: Ao realizar um saque, uma mensagem é retornada com o valor final da conta do usuário. (PL-05)
 * Consulta de saldo: Adicionada a funcionalidade de verificação de saldo, retornando uma mensagem clara com o valor da conta. (PL-05)
 * Adicionar testes unitários para AccountService cobrindo criação de conta, depósito, saque e consulta de saldo. (PL-06)
+* Ajuste no Docker e criação do script para povoar o banco. (PL-07)
