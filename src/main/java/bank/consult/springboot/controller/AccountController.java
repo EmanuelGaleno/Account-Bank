@@ -15,7 +15,7 @@ import java.math.BigDecimal;
 
 
 @RestController
-@RequestMapping("/accounts")
+@RequestMapping("v1/accounts")
 public class AccountController {
 
     private final AccountService accountService;

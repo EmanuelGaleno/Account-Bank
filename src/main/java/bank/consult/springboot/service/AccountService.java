@@ -6,7 +6,6 @@ import bank.consult.springboot.entity.UserEntity;
 import bank.consult.springboot.enums.AccountType;
 import bank.consult.springboot.repository.AccountRepository;
 import bank.consult.springboot.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -18,8 +17,7 @@ public class AccountService {
     private final AccountRepository accountRepository;
     private final UserRepository userRepository;
 
-    // Injeção via construtor (padrão recomendadíssimo)
-    @Autowired
+
     public AccountService(AccountRepository accountRepository, UserRepository userRepository) {
         this.accountRepository = accountRepository;
         this.userRepository = userRepository;

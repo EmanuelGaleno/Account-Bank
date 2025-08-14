@@ -8,6 +8,7 @@ import java.util.List;
 public interface UserRepository extends JpaRepository<UserEntity, Long> {
 
     // Metodo para verificar se user ja existe e dps criar uma conta
+    // Usando @query so para fins de estudo mas aqui pode ser resolvido com Derived Query Methods, a 'biblioteca de finds'
     @Query("SELECT u FROM UserEntity u " +
             "WHERE LOWER(u.firstName) = LOWER(:firstName) " +
             "AND LOWER(u.lastName) = LOWER(:lastName)")
